@@ -1,0 +1,66 @@
+ EC2 (Elastic Compute Cloud) Instance Using AWS CLI through Terminal using Linux (v.01)
+
+
+In order to create EC2 instance Login to the AWS Console and get the following information;
+
+Install AWS CLI for Linux on the computer.
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+
+Install zip/ Unzip to unzip the asw cli package
+
+sudo apt-get install zip (This should also install unzip option too)
+
+Unzip the file, currently should be in the same directory.
+
+	Unzip awsclive2.zip
+
+Navigate to the file and run the command
+
+sudo ./aws/install
+
+Create an Admin user through IAM (Identity Access Management).
+To get the Access Key ID
+Secret Key
+(Note: Google is your best friend if you don’t know this search for it.)
+
+Need to know the specific region (for this I will be using us-east-1)
+
+Create keypair through AWS CLI
+
+aws ec2 create-key-pair --key-name awsclikey --query 'keyMaterial' --output text > awsclikey.pem
+
+Change the permission of the key to it has read only access
+
+chmod 400 awsclikey.pem
+
+A filter name and value pair that is used to return a more specific list of results from a describe operation.
+
+aws ec2 describe-key-pairs --key-names awsclikey
+
+We will need a security group to manage the traffic that will be using the EC2 instances.
+
+aws ec2 create-security-group --group-name awscligroup --description "group created with awscli" --vpc-id vpc-0e4167f02a110a4ed
+
+	Note: Get Default vpc Id from the console
+
+Define the inbound rules now
+
+aws ec2 authorize-security-group-ingress --group-id sg-0b2ba2fe2deb772b6 --protocol tcp  --port 0-65535 --cidr 0.0.0.0/0
+
+
+Ingress means input bounds rule
+
+Group id is what we created just now.
+
+Protocol tcp which we will be using
+
+Port have to define the range 0-65535
+
+Define the ip address 0.0.0.0/0
+
+To perform the next step we will need the Image Id (a specific image we will be using for our instance. For this demo we will be using Ubuntu Linux LTS 20).
+
+aws ec2 run-instances --image-id ami-0b93ce03dcbcb10f6 --count 2 --instance-type t2.micro --key-name awsclikey --security-group-ids sg-0b2ba2fe2deb772b6 --subnet-id subnet-013a2aa48b12f80b2
+
+The EC2 instance will be ready shortly.
