@@ -8,4 +8,10 @@ Link 1: https://devopswrk.blogspot.com/2023/01/free-ec2-setup-instructions.html
 
 Link 2: https://devopswrk.blogspot.com/2023/01/ec2-elastic-compute-cloud-instance.html
 
+There is a requirement if you plan on using the Automated scripts to automate the process.
+
+- You need to have boto3 SDK on your machine.
+- AWS console user with Access ID and Secret Key.
+- Setup AWS CLI
+
 #AWS-EC2-Instance
